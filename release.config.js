@@ -1,6 +1,6 @@
 export default {
   branches: ["main"],
-  repositoryUrl: "https://github.com/SP-Packages/printer.git",
+  repositoryUrl: "https://github.com/SP-Packages/depkit.git",
   prepare: [
     {
       path: "@semantic-release/exec",
