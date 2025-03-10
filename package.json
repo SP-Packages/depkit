@@ -1,0 +1,98 @@
+{
+  "name": "@sp-packages/package-name",
+  "description": "A simple Node.js package template.",
+  "version": "0.0.1",
+  "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "Senthilprabu Ponnusamy",
+    "email": "info@senthilprabu.in",
+    "url": "https://www.senthilprabu.in"
+  },
+  "funding": "https://github.com/sponsors/iamsenthilprabu",
+  "keywords": [
+    "text"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SP-Packages/package-name.git"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "main": "./dist/index.js",
+  "bin": {
+    "package-name": "./dist/bin/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "depcheck": {
+    "ignores": [
+      "conventional-changelog-conventionalcommits",
+      "cspell",
+      "depcheck",
+      "husky",
+      "semantic-release",
+      "@commitlint/config-conventional",
+      "@semantic-release/changelog",
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/exec",
+      "@semantic-release/git",
+      "@semantic-release/npm",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github",
+      "@types/node"
+    ]
+  },
+  "lint-staged": {
+    "**/*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "**/*.{json,md}": [
+      "prettier --write"
+    ],
+    "*": [
+      "npm run cspell"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@eslint/js": "^9.22.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/exec": "^7.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.1",
+    "@semantic-release/npm": "^12.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.3",
+    "@types/node": "^22.13.10",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
+    "cspell": "^8.17.5",
+    "depcheck": "^1.4.7",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-jsdoc": "^50.6.3",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-tsdoc": "^0.4.0",
+    "globals": "^16.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.5.3",
+    "semantic-release": "^24.2.3",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "commitlint": "commitlint --from=origin/main --to=HEAD --verbose",
+    "cspell": "cspell --no-progress --no-summary",
+    "eslint:fix": "eslint --fix",
+    "prepare": "husky install",
+    "prettier:write": "prettier --write",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
