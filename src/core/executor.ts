@@ -1,102 +1,99 @@
-import { promisify } from "util";
-import { exec } from "child_process";
+import pLimit from "p-limit";
+import { spawn } from "child_process";
+import { Printer } from "../utils/logger.js";
 import { isToolAvailable } from "../utils/helper.js";
-import { Commands, CommandResult, StdError } from "../types/types.js";
-import {
-  printSubheader,
-  printSectionHeader,
-  printSuccess,
-  printWarning,
-  printError,
-} from "../utils/logger.js";
+import { Command, Commands, CommandResult } from "../types/types.js";
 
-const results: CommandResult[] = [];
-const execPromise = promisify(exec);
+const CONCURRENCY_LIMIT = 4;
+const limit = pLimit(CONCURRENCY_LIMIT);
 
 /**
- * Executes the commands in the given list.
- * @param commands - The list of commands to execute
- * @returns The results of the command execution
+ * Executes a single command and buffers output.
+ * @param key - The command key
+ * @param commandDetails - The details of the command
+ * @returns The result of the command execution
  */
-async function runCommands(commands: Commands): Promise<void> {
-  for (const key of Object.keys(commands)) {
-    const { title, command, behavior, requires } = commands[key];
-    printSectionHeader(title);
-
-    if (requires && !isToolAvailable(requires)) {
-      if (behavior === "warn") {
-        printWarning(`Skipping ${title}: Required tool '${requires}' not found.`);
-        results.push({ title, status: "warning", output: `Missing tool: ${requires}` });
-      } else {
-        printError(`Skipping ${title}: Required tool '${requires}' not found.`);
-        results.push({ title, status: "error", output: `Missing tool: ${requires}` });
-      }
-      continue;
-    }
-
-    try {
-      const { stdout, stderr } = await execPromise(command);
-      const output = stdout.trim() || "Success";
-      printSuccess(output);
-      if (stderr) printWarning(stderr.trim());
-      results.push({ title, status: "success", output });
-    } catch (e: unknown) {
-      if (e as string) {
-        const { stdout, stderr, message } = e as StdError;
-        const out = stdout.trim();
-        const err = stderr.trim();
-        const msg = message.trim();
-
-        if (stdout) printError(out);
-        if (stderr) printError(err);
-
-        if (behavior === "warn") {
-          printWarning(`Warning: ${msg}`);
-          results.push({ title, status: "warning", output: msg });
-        } else {
-          printError(`Error: ${msg}`);
-          results.push({ title, status: "error", output: msg });
-        }
-      } else {
-        results.push({ title, status: "error", output: "Unknown error occurred." });
-        throw new Error("Error: Unknown error occurred.");
-      }
+async function executeCommandBuffered(commandDetails: Command): Promise<CommandResult> {
+  const { title, type, command, prefix, args, behavior, requires } = commandDetails;
+  if ((requires && !isToolAvailable(requires)) || !isToolAvailable(command)) {
+    Printer.subheader(title);
+    const message = `Skipping ${title}: Required tool '${requires || command}' not found.`;
+    if (behavior === "warn") {
+      Printer.warning(message);
+      return { title, status: "warning", output: `Missing tool: ${requires || command}` };
+    } else {
+      Printer.error(message);
+      return { title, status: "error", output: `Missing tool: ${requires || command}` };
     }
   }
+
+  let cmd = command;
+  if (prefix) {
+    cmd = `${prefix} ${cmd}`;
+  } else if (type === "npm") {
+    cmd = `npm ${cmd}`;
+  } else if (type === "composer") {
+    cmd = `composer ${cmd}`;
+  }
+  if (args?.length) {
+    cmd += ` ${args.join(" ")}`;
+  }
+
+  return new Promise((resolve) => {
+    const childProcess = spawn(cmd, { shell: true, env: { ...process.env, FORCE_COLOR: "true" } });
+
+    let stdoutBuffer = "";
+    let stderrBuffer = "";
+    let message = "";
+
+    childProcess.stdout.on("data", (data) => {
+      stdoutBuffer += data.toString();
+    });
+
+    childProcess.stderr.on("data", (data) => {
+      stderrBuffer += data.toString();
+    });
+
+    childProcess.on("close", (code) => {
+      Printer.subheader(title);
+      message = stdoutBuffer + stderrBuffer;
+
+      if (code === 0) {
+        resolve({ title, status: "success", output: stdoutBuffer.trim() });
+        Printer.success("Successfully Completed.");
+      } else {
+        if (behavior === "warn") {
+          resolve({ title, status: "warning", output: stderrBuffer.trim() || "Warning" });
+          Printer.warning("Failed with warnings.");
+        } else {
+          resolve({ title, status: "error", output: stderrBuffer.trim() || "Error" });
+          Printer.error("Failed to complete.");
+        }
+      }
+      if (message) {
+        Printer.log(`${cmd}`);
+        Printer.log(message.trim());
+      }
+    });
+  });
 }
 
 /**
  * Executes the given commands.
- * @param composerCommands - The Composer commands to execute
- * @param npmCommands - The NPM commands to execute
+ * @param commands - The commands to execute
  * @returns The results of the command execution
  */
-export async function executeCommands(
-  composerCommands: Commands,
-  npmCommands: Commands,
-): Promise<CommandResult[]> {
-  try {
-    if (Object.keys(composerCommands).length > 0) {
-      printSubheader("Composer Manager");
-      await runCommands(composerCommands);
-    }
+export async function executeCommands(commands: Commands): Promise<CommandResult[]> {
+  const results: CommandResult[] = [];
+  if (Object.keys(commands).length > 0) {
+    // Run commands in parallel with controlled concurrency
+    const commandPromises = Object.keys(commands).map((key) =>
+      limit(() => executeCommandBuffered(commands[key])),
+    );
 
-    if (Object.keys(npmCommands).length > 0) {
-      printSubheader("NPM Manager");
-      await runCommands(npmCommands);
-    }
-  } catch (e: unknown) {
-    printError(`${e}`);
-    if (e instanceof Error) {
-      results.push({ title: "DepKit", status: "error", output: e.message });
-    } else {
-      results.push({
-        title: "DepKit",
-        status: "error",
-        output: "Unknown error occurred.",
-      });
-      throw new Error("Error: Unknown error occurred.");
-    }
+    // Execute all commands and collect results
+    const commandResults = await Promise.all(commandPromises);
+    results.push(...commandResults);
   }
   return results;
 }
