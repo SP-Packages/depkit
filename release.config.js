@@ -1,12 +1,6 @@
 export default {
   branches: ["main"],
   repositoryUrl: "https://github.com/SP-Packages/depkit.git",
-  prepare: [
-    {
-      path: "@semantic-release/exec",
-      cmd: "zip -r dist.zip dist/",
-    },
-  ],
   plugins: [
     [
       "@semantic-release/commit-analyzer",
@@ -23,9 +17,16 @@ export default {
     "@semantic-release/changelog",
     "@semantic-release/npm",
     [
+      "@semantic-release/exec",
+      {
+        // Regenerating package-lock.json
+        prepareCmd: "npm install --package-lock-only",
+      },
+    ],
+    [
       "@semantic-release/git",
       {
-        assets: ["CHANGELOG.md", "package.json"],
+        assets: ["CHANGELOG.md", "package.json", "package-lock.json"],
         message: "chore(release): v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
       },
     ],
