@@ -83,6 +83,7 @@
     "conventional-changelog-conventionalcommits": "^8.0.0",
     "cspell": "^8.17.5",
     "depcheck": "^1.4.7",
+    "esbuild": "^0.25.1",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-jsdoc": "^50.6.3",
@@ -97,7 +98,7 @@
     "typescript-eslint": "^8.26.0"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && esbuild dist/**/*.js --minify --outdir=dist --allow-overwrite --tree-shaking=true --platform=node",
     "commitlint": "commitlint --from=origin/main --to=HEAD --verbose",
     "cspell": "cspell --no-progress --no-summary",
     "eslint:fix": "eslint --fix",
