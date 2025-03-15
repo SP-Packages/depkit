@@ -21,15 +21,15 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/SP-Packages/depkit.git"
+    "url": "git+https://github.com/SP-Packages/depkit.git"
   },
   "files": [
     "dist",
     "README.md"
   ],
-  "main": "./dist/index.js",
+  "main": "./dist/depkit.js",
   "bin": {
-    "depkit": "./dist/bin/depkit.js"
+    "depkit": "dist/bin/depkit.js"
   },
   "publishConfig": {
     "access": "public"
@@ -65,7 +65,7 @@
     ]
   },
   "dependencies": {
-    "@sp-packages/printer": "^1.0.0",
+    "@sp-packages/printer": "^2.2.0",
     "commander": "^13.1.0"
   },
   "devDependencies": {

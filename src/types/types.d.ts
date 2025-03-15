@@ -1,8 +1,12 @@
 export type Command = {
   title: string;
+  prefix?: string;
   command: string;
+  args?: string[];
+  type: "composer" | "npm";
   behavior: "warn" | "error";
   requires?: string;
+  priority?: number;
 };
 
 export type Commands = Record<string, Command>;
@@ -19,8 +23,6 @@ export type DepKitOptions = {
   production: boolean;
 };
 
-export interface StdError extends Error {
-  stdout: string;
-  stderr: string;
-  message: string;
-}
+export type Config = {
+  TOOLS: Commands;
+};

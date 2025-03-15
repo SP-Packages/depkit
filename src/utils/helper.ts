@@ -1,14 +1,9 @@
 import { existsSync } from "fs";
 import { execSync } from "child_process";
-import { Commands, CommandResult } from "../types/types.js";
-import { COMPOSER_COMMANDS, NPM_COMMANDS } from "../constants.js";
-import {
-  printSuccess,
-  printWarning,
-  printError,
-  printHeader,
-  printSubheader,
-} from "../utils/logger.js";
+import { Printer } from "../utils/logger.js";
+import { Commands, CommandResult, Config, DepKitOptions } from "../types/types.js";
+
+const toolCache = new Map<string, boolean>();
 
 /**
  * Checks if the given tool is available in the system.
@@ -16,8 +11,24 @@ import {
  * @returns True if the tool is available, false otherwise
  */
 export function isToolAvailable(tool: string): boolean {
+  if (toolCache.has(tool)) return toolCache.get(tool)!;
+
+  const pathsToCheck = [
+    `vendor/bin/${tool}`, // Check if it's installed in vendor/bin
+    `/usr/local/bin/${tool}`, // Common global installation path
+    `/usr/bin/${tool}`, // Another common global path
+  ];
+
+  for (const path of pathsToCheck) {
+    if (existsSync(path)) {
+      toolCache.set(tool, true);
+      return true;
+    }
+  }
+
   const commandsToCheck = [
     `npx ${tool} --no-install --version`,
+    `composer ${tool}`,
     `command -v ${tool}`,
     `${tool} --version`,
   ];
@@ -25,117 +36,69 @@ export function isToolAvailable(tool: string): boolean {
   for (const cmd of commandsToCheck) {
     try {
       execSync(cmd, { stdio: "ignore" });
+      toolCache.set(tool, true);
       return true;
     } catch {
       continue;
     }
   }
 
+  toolCache.set(tool, false);
   return false;
 }
 
 /**
- * Gets the Composer commands.
- * @param production - If the production flag is set
- * @returns The Composer commands
+ * Sorts the tools by priority.
+ * @param tools - The tools to sort
+ * @returns The sorted tools
  */
-export function getComposerCommands(production: boolean): Commands {
-  const commands = { ...COMPOSER_COMMANDS };
+function sortToolsByPriority(tools: Commands): Commands {
+  // Sort tools by priority and maintain the order of files within each tool
+  const sortedTools = Object.entries(tools)
+    .sort(
+      ([, toolA], [, toolB]) =>
+        (toolA.priority ?? Number.MAX_SAFE_INTEGER) - (toolB.priority ?? Number.MAX_SAFE_INTEGER),
+    )
+    .map(([tool, lintTool]) => [tool, { ...lintTool }]);
+
+  return Object.fromEntries(sortedTools);
+}
+
+/**
+ * Gets the tools based on the configuration and options.
+ * @param config - The configuration
+ * @param options - The options
+ * @returns The tools
+ */
+export function getTools(config: Config, options: DepKitOptions): Commands {
+  let tools: Commands = { ...config.TOOLS };
+  const { skipComposer = false, skipNpm = false, production = false } = options;
+
+  const toolChecks = [
+    { tool: "composer", skipFlag: skipComposer, file: "composer.json" },
+    { tool: "npm", skipFlag: skipNpm, file: "package.json" },
+  ];
+
+  toolChecks.forEach(({ tool, skipFlag, file }) => {
+    if (skipFlag || !isToolAvailable(tool) || !existsSync(file)) {
+      tools = Object.fromEntries(Object.entries(tools).filter(([, t]) => t.type !== tool));
+    }
+  });
 
   if (production) {
-    commands.install = {
-      title: "Installing PHP Dependencies (Production Only)",
-      command: "composer install --no-dev",
-      behavior: "error",
-    };
+    tools = Object.fromEntries(
+      Object.entries(tools).map(([key, tool]) => {
+        const commandMap: { [key: string]: string } = {
+          "npm ci": "npm ci --omit=dev",
+          "npm install": "npm install --omit=dev",
+          "composer install": "composer install --no-dev",
+        };
+        return [key, { ...tool, command: commandMap[tool.command] || tool.command }];
+      }),
+    );
   }
 
-  return commands;
-}
-
-/**
- * Gets the NPM commands.
- * @param production - If the production flag is set
- * @returns The NPM commands
- */
-export function getNPMCommands(production: boolean): Commands {
-  const commands = { ...NPM_COMMANDS };
-
-  if (production) {
-    commands.install = {
-      title: "Installing NPM Dependencies (Production Only)",
-      command: "npm install --omit=dev",
-      behavior: "error",
-    };
-  }
-
-  return commands;
-}
-
-/**
- * Gets the Composer commands if available.
- * @param production - If the production flag is set
- * @param toolResults - The results of the tool
- * @returns The Composer commands
- */
-export async function getComposerCommandsIfAvailable(
-  production: boolean,
-  toolResults: CommandResult[],
-): Promise<Commands> {
-  if (!isToolAvailable("composer")) {
-    printError("Error: Composer is not installed. Skipping Composer commands.");
-    toolResults.push({
-      title: "Composer Manager",
-      status: "error",
-      output: "Composer is not installed.",
-    });
-    return {};
-  }
-
-  if (!existsSync("composer.json")) {
-    printError("Error: No composer.json found. Skipping Composer commands.");
-    toolResults.push({
-      title: "Composer Manager",
-      status: "error",
-      output: "composer.json not found.",
-    });
-    return {};
-  }
-
-  return getComposerCommands(production);
-}
-
-/**
- * Gets the NPM commands if available.
- * @param production - If the production flag is set
- * @param toolResults - The results of the tool
- * @returns The NPM commands
- */
-export async function getNPMCommandsIfAvailable(
-  production: boolean,
-  toolResults: CommandResult[],
-): Promise<Commands> {
-  if (!isToolAvailable("npm")) {
-    printError("Error: NPM is not installed. Skipping NPM commands.");
-    toolResults.push({
-      title: "NPM Manager",
-      status: "error",
-      output: "NPM is not installed.",
-    });
-    return {};
-  }
-
-  if (!existsSync("package.json")) {
-    printError("Error: No package.json found. Skipping NPM commands.");
-    toolResults.push({
-      title: "NPM Manager",
-      status: "error",
-      output: "package.json not found.",
-    });
-    return {};
-  }
-
-  return getNPMCommands(production);
+  return sortToolsByPriority(tools);
 }
 
 /**
@@ -143,25 +106,33 @@ export async function getNPMCommandsIfAvailable(
  * @param results - The results of the commands
  */
 export function summary(results: CommandResult[]): void {
-  printSubheader("DepKit Results");
-  let overAllStatus = true;
-  results.forEach(({ title, status, output }) => {
+  Printer.subheader("DepKit Results");
+
+  const successes: string[] = [];
+  const warnings: string[] = [];
+  const errors: string[] = [];
+
+  results.forEach(({ title, status }) => {
     if (status === "success") {
-      printSuccess(`${title}: Passed`);
+      successes.push(`${title}: Passed`);
     } else if (status === "warning") {
-      printWarning(`${title}: Issues found - ${output}`);
+      warnings.push(`${title}: Issues found`);
     } else {
-      printError(`${title}: Failed - ${output}`);
-      overAllStatus = false;
+      errors.push(`${title}: Failed`);
     }
   });
 
-  printHeader("DepKit Summary");
-  if (overAllStatus) {
-    printSuccess("DepKit completed successfully. Happy coding!");
+  successes.forEach((success) => Printer.success(success));
+  warnings.forEach((warning) => Printer.warning(warning));
+  errors.forEach((error) => Printer.error(error));
+
+  Printer.header("DepKit Summary");
+
+  if (errors.length === 0) {
+    Printer.success("DepKit completed successfully. Happy coding!");
     process.exit(0);
   } else {
-    printError("DepKit completed with errors.");
+    Printer.error("DepKit completed with errors.");
     process.exit(1);
   }
 }
