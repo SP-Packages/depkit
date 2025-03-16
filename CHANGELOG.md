@@ -1,3 +1,17 @@
+## [2.1.0](https://github.com/SP-Packages/depkit/compare/v2.0.0...v2.1.0) (2025-03-16)
+
+### Features
+
+* **dependencies:** add depkit configuration and update package versions ([f58c2cb](https://github.com/SP-Packages/depkit/commit/f58c2cbb98884452290f048c3b5eeeaefbbef4ef))
+* **executor:** enhance tool availability check with optional type ([17b4f95](https://github.com/SP-Packages/depkit/commit/17b4f957a0b38f84e40df6e4fe8fe5dcb3c1c52a))
+* **lint:** add lintrc configuration and integrate markdownlint ([14120e9](https://github.com/SP-Packages/depkit/commit/14120e939979e2ae9b9601372a8cad7f2e521c96))
+
+### Bug Fixes
+
+* **depkit:** update action parameters to include _files argument ([71e2381](https://github.com/SP-Packages/depkit/commit/71e23812aa661b205f0bda6674846f7d499bf22d))
+* **executor:** remove redundant log for empty command output ([003af81](https://github.com/SP-Packages/depkit/commit/003af8121360ec3efe945ed29168c4cad32214e0))
+* **readme:** streamline badge links for improved readability ([042dd5a](https://github.com/SP-Packages/depkit/commit/042dd5a8c08353ddefcf2b7f803dc94f2c07105c))
+
 ## [2.0.0](https://github.com/SP-Packages/depkit/compare/v1.0.0...v2.0.0) (2025-03-15)
 
 ### ⚠ BREAKING CHANGES
