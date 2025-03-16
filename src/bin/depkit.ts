@@ -14,6 +14,7 @@ program
   .description(
     "A lightweight CLI tool to efficiently manage Composer & NPM dependencies in a project.",
   )
+  .argument("[files...]", "Optional File list to handle lint-staged")
   .option("--skip-composer", "Skip processing Composer dependencies")
   .option("--skip-npm", "Skip processing NPM dependencies")
   .option("--production", "Install only production dependencies (exclude dev dependencies)")

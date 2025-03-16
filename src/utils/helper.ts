@@ -8,10 +8,12 @@ const toolCache = new Map<string, boolean>();
 /**
  * Checks if the given tool is available in the system.
  * @param tool - The tool to check for
+ * @param type - Optional type (e.g., "npm", "composer") to ensure the correct tool is checked
  * @returns True if the tool is available, false otherwise
  */
-export function isToolAvailable(tool: string): boolean {
-  if (toolCache.has(tool)) return toolCache.get(tool)!;
+export function isToolAvailable(tool: string, type?: "npm" | "composer"): boolean {
+  const cacheKey = type ? `${type}:${tool}` : tool;
+  if (toolCache.has(cacheKey)) return toolCache.get(cacheKey)!;
 
   const pathsToCheck = [
     `vendor/bin/${tool}`, // Check if it's installed in vendor/bin
@@ -21,29 +23,33 @@ export function isToolAvailable(tool: string): boolean {
 
   for (const path of pathsToCheck) {
     if (existsSync(path)) {
-      toolCache.set(tool, true);
+      toolCache.set(cacheKey, true);
       return true;
     }
   }
 
-  const commandsToCheck = [
-    `npx ${tool} --no-install --version`,
-    `composer ${tool}`,
-    `command -v ${tool}`,
-    `${tool} --version`,
-  ];
+  const commandsToCheck = [];
+
+  if (!type || type === "npm") {
+    commandsToCheck.push(`npx ${tool} --no-install --version`, `npm ${tool} --version`);
+  }
+  if (!type || type === "composer") {
+    commandsToCheck.push(`composer ${tool}`);
+  }
+
+  commandsToCheck.push(`command -v ${tool}`, `${tool} --version`);
 
   for (const cmd of commandsToCheck) {
     try {
       execSync(cmd, { stdio: "ignore" });
-      toolCache.set(tool, true);
+      toolCache.set(cacheKey, true);
       return true;
     } catch {
       continue;
     }
   }
 
-  toolCache.set(tool, false);
+  toolCache.set(cacheKey, false);
   return false;
 }
 
