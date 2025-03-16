@@ -65,7 +65,7 @@
     ]
   },
   "dependencies": {
-    "@sp-packages/printer": "^2.2.0",
+    "@sp-packages/printer": "^2.3.0",
     "commander": "^13.1.0"
   },
   "devDependencies": {
@@ -107,6 +107,7 @@
     "eslint:fix": "eslint --fix",
     "prepare": "husky install",
     "prettier:write": "prettier --write",
+    "depkit": "npx depkit",
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage"

@@ -10,6 +10,7 @@ const length = {
 };
 
 const commitTypes = [
+  "build",
   "feat",
   "fix",
   "docs",
