@@ -21,7 +21,7 @@ program
   .option("-c, --config <config>", "Path to the configuration file (default: .depkit.json)")
   .option("-q, --quiet", "Disable output")
   .option("-v, --verbose", "Enable verbose logging")
-  .action(async (options) => {
+  .action(async (_files, options) => {
     if (options.verbose) {
       Printer.enableVerbose();
     }
