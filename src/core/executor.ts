@@ -15,7 +15,7 @@ const limit = pLimit(CONCURRENCY_LIMIT);
  */
 async function executeCommandBuffered(commandDetails: Command): Promise<CommandResult> {
   const { title, type, command, prefix, args, behavior, requires } = commandDetails;
-  if ((requires && !isToolAvailable(requires)) || !isToolAvailable(command)) {
+  if ((requires && !isToolAvailable(requires)) || !isToolAvailable(command, type)) {
     Printer.subheader(title);
     const message = `Skipping ${title}: Required tool '${requires || command}' not found.`;
     if (behavior === "warn") {

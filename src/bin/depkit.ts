@@ -14,13 +14,14 @@ program
   .description(
     "A lightweight CLI tool to efficiently manage Composer & NPM dependencies in a project.",
   )
+  .argument("[files...]", "Optional File list to handle lint-staged")
   .option("--skip-composer", "Skip processing Composer dependencies")
   .option("--skip-npm", "Skip processing NPM dependencies")
   .option("--production", "Install only production dependencies (exclude dev dependencies)")
   .option("-c, --config <config>", "Path to the configuration file (default: .depkit.json)")
   .option("-q, --quiet", "Disable output")
   .option("-v, --verbose", "Enable verbose logging")
-  .action(async (options) => {
+  .action(async (_files, options) => {
     if (options.verbose) {
       Printer.enableVerbose();
     }
