@@ -73,8 +73,6 @@ async function executeCommandBuffered(commandDetails: Command): Promise<CommandR
       if (message) {
         Printer.log(`${cmd}`);
         Printer.log(message.trim());
-      } else {
-        Printer.log("No output.");
       }
     });
   });
