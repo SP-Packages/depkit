@@ -112,7 +112,11 @@ export function getTools(config: Config, options: DepKitOptions): Commands {
  * @param results - The results of the commands
  */
 export function summary(results: CommandResult[]): void {
-  Printer.subheader("DepKit Results");
+  if (Printer.isVerbose) {
+    Printer.log("DepKit Results", "subheader");
+  } else {
+    Printer.plainSubheader("DepKit Results");
+  }
 
   const successes: string[] = [];
   const warnings: string[] = [];
@@ -132,13 +136,13 @@ export function summary(results: CommandResult[]): void {
   warnings.forEach((warning) => Printer.warning(warning));
   errors.forEach((error) => Printer.error(error));
 
-  Printer.header("DepKit Summary");
+  Printer.log("DepKit Summary", "header");
 
   if (errors.length === 0) {
-    Printer.success("DepKit completed successfully. Happy coding!");
+    Printer.log("DepKit completed successfully. Happy coding!", "success");
     process.exit(0);
   } else {
-    Printer.error("DepKit completed with errors.");
+    Printer.log("DepKit completed with errors.", "error");
     process.exit(1);
   }
 }

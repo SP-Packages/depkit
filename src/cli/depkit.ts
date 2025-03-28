@@ -9,18 +9,21 @@ import { Config, CommandResult, DepKitOptions } from "../types/types.js";
  * @param options - The options to configure the execution.
  */
 export async function depkit(config: Config, options: DepKitOptions): Promise<void> {
-  Printer.header("DepKit");
+  Printer.log("DepKit", "header");
+
+  const spinner = Printer.spinner("Processing...").start();
 
   const toolResults: CommandResult[] = [];
-
   const tools = getTools(config, options);
 
   if (Object.keys(tools).length === 0) {
+    spinner.fail();
     Printer.error("No matching tools found. Skipping checks.");
     process.exit(1);
   }
 
-  const results = await executeCommands(tools);
+  const results = await executeCommands(tools, spinner);
+  spinner.succeed("Processing complete!");
   toolResults.push(...results);
   summary(toolResults);
 }
