@@ -1,3 +1,14 @@
+## [2.2.0](https://github.com/SP-Packages/depkit/compare/v2.1.0...v2.2.0) (2025-03-28)
+
+### Features
+
+* **cli, core, utils:** enhance logging with spinner and log ([97f4b0e](https://github.com/SP-Packages/depkit/commit/97f4b0e72013652d5a926471adf1ac6a4bebf3bf))
+* **makefile:** add Makefile with help, start, dep, and lint targets ([43f19ff](https://github.com/SP-Packages/depkit/commit/43f19ffb69d49498c79ca2f1b51f997cdce8849a))
+
+### Bug Fixes
+
+* **deps:** update dependencies ([c36cd3b](https://github.com/SP-Packages/depkit/commit/c36cd3b64dc5b9217b6924d31590c2336171de87))
+
 ## [2.1.0](https://github.com/SP-Packages/depkit/compare/v2.0.0...v2.1.0) (2025-03-16)
 
 ### Features
