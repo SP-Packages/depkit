@@ -1,3 +1,17 @@
+## [2.3.0](https://github.com/SP-Packages/depkit/compare/v2.2.0...v2.3.0) (2025-04-01)
+
+### Features
+
+* **config:** improve config file resolution and generation prompt ([99ec11d](https://github.com/SP-Packages/depkit/commit/99ec11d2511b49862dcf5d4877fa68196b7df908))
+* **funding:** add custom PayPal funding link to funding configuration ([fb85e15](https://github.com/SP-Packages/depkit/commit/fb85e15d47693c1f423b3f890c834de3a790a237))
+* **labeler:** enhance labeler configuration for various file types ([9549ca2](https://github.com/SP-Packages/depkit/commit/9549ca2f2066c8b408a135927f61636ece4c9a1a))
+* **linting:** add markdownlint configuration and update cspell settings ([5e9bbf2](https://github.com/SP-Packages/depkit/commit/5e9bbf204297728034a750248c1d2a5fccb863ec))
+* **workflows:** update workflow configurations and permissions ([79736db](https://github.com/SP-Packages/depkit/commit/79736db066a2e26b3dac5cc8beca9e9085d99913))
+
+### Bug Fixes
+
+* **spinner:** clear spinner before error messages and on completion ([7e2ab55](https://github.com/SP-Packages/depkit/commit/7e2ab5533970b74ee26d5ef81b9c194bdffaa7b1))
+
 ## [2.2.0](https://github.com/SP-Packages/depkit/compare/v2.1.0...v2.2.0) (2025-03-28)
 
 ### Features
