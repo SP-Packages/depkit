@@ -55,7 +55,6 @@ dependencies:
 # Label for changes in configuration files
 configuration:
   - changed-files:
-      - any-glob-to-any-file: ".depkit.json"
       - any-glob-to-any-file: ".editorconfig"
       - any-glob-to-any-file: ".gitignore"
       - any-glob-to-any-file: ".lintrc.json"
@@ -64,6 +63,7 @@ configuration:
       - any-glob-to-any-file: "codecov.yml"
       - any-glob-to-any-file: "commitlint.config.js"
       - any-glob-to-any-file: "cspell.json"
+      - any-glob-to-any-file: "depkit.json"
       - any-glob-to-any-file: "eslint.config.js"
       - any-glob-to-any-file: "prettierrc.json"
       - any-glob-to-any-file: "release.config.js"

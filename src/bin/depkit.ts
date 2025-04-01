@@ -18,7 +18,7 @@ program
   .option("--skip-composer", "Skip processing Composer dependencies")
   .option("--skip-npm", "Skip processing NPM dependencies")
   .option("--production", "Install only production dependencies (exclude dev dependencies)")
-  .option("-c, --config <config>", "Path to the configuration file (default: .depkit.json)")
+  .option("-c, --config <config>", "Path to the configuration file (default: depkit.json)")
   .option("-q, --quiet", "Disable output")
   .option("-v, --verbose", "Enable verbose logging")
   .action(async (_files, options) => {

@@ -22,7 +22,7 @@ Managing dependencies across both Composer (PHP) and NPM (JavaScript) can be ted
 - 📦 Install dependencies for **both Composer and NPM**
 - 🔄 Audit and check for **outdated dependencies**
 - 🚀 Ensure **best practices** by running necessary package checks
-- 📜 **Customizable config file (`.depkit.json`)**
+- 📜 **Customizable config file (`depkit.json`)**
 - ⚡ Works seamlessly with **WordPress, PHP, and Node.js projects**
 - 🛠️ Ideal for **automation in CI/CD, Lando, and local development workflows**
 
@@ -88,7 +88,7 @@ Options:
 --skip-composer Skip processing Composer dependencies
 --skip-npm Skip processing NPM dependencies
 --production Install only production dependencies (exclude dev dependencies)
--c, --config <config> Path to the configuration file (default: .depkit.json)
+-c, --config <config> Path to the configuration file (default: depkit.json)
 -q, --quiet Disable output
 -v, --verbose Enable verbose logging
 -h, --help display help for command
@@ -127,9 +127,9 @@ This runs:
 - `composer install --no-dev`
 - `npm install --omit=dev`
 
-## **⚙️ Configuration (`.depkit.json`)**
+## **⚙️ Configuration (`depkit.json`)**
 
-Running the `depkit` command will allow you to automatically create the `.depkit.json` file. Alternatively, you can manually create a `.depkit.json` in your project root or a custom configuration file and pass it using the `-c` or `--config` parameter:
+Running the `depkit` command will allow you to automatically create the `depkit.json` file. Alternatively, you can manually create a `depkit.json` or `.depkit.json` in your project root or a custom configuration file and pass it using the `-c` or `--config` parameter:
 
 ```json
 {
@@ -178,7 +178,7 @@ Running the `depkit` command will allow you to automatically create the `.depkit
 }
 ```
 
-If no --config option is provided, `depkit` will look for .depkit.json in the project root by default.
+If no --config option is provided, `depkit` will look for `depkit.json` or `.depkit.json` in the project root by default.
 
 ## **📜 Commands Overview**
 
