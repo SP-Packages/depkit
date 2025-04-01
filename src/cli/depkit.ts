@@ -17,13 +17,13 @@ export async function depkit(config: Config, options: DepKitOptions): Promise<vo
   const tools = getTools(config, options);
 
   if (Object.keys(tools).length === 0) {
-    spinner.fail();
+    spinner.clear();
     Printer.error("No matching tools found. Skipping checks.");
     process.exit(1);
   }
 
   const results = await executeCommands(tools, spinner);
-  spinner.succeed("Processing complete!");
+  spinner.clear();
   toolResults.push(...results);
   summary(toolResults);
 }
