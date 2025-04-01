@@ -27,20 +27,33 @@ function askQuestion(query: string): Promise<string> {
  * @returns The configuration object
  */
 export async function readConfig(configPath?: string): Promise<Config> {
-  const defaultConfigFile = ".depkit.json";
-  let resolvedPath = configPath ? path.resolve(configPath) : path.resolve(defaultConfigFile);
+  const defaultConfigFileName = "depkit.json";
+  const possibleConfigFiles = ["depkit.json", ".depkit.json"];
+  let resolvedPath = configPath ? path.resolve(configPath) : null;
 
-  if (!existsSync(resolvedPath)) {
-    Printer.error(`Config file not found at: ${resolvedPath}`);
+  // If no config path specified, try possible config files
+  if (!resolvedPath) {
+    for (const file of possibleConfigFiles) {
+      const testPath = path.resolve(file);
+      if (existsSync(testPath)) {
+        resolvedPath = testPath;
+        break;
+      }
+    }
+  }
+
+  // If still no config found, ask to create one
+  if (!resolvedPath || !existsSync(resolvedPath)) {
+    Printer.error("Config file not found");
     Printer.error(
-      `Please create a "${defaultConfigFile}" or specify a config file with --config <path>`,
+      `Please create a ${defaultConfigFileName} or specify a config file with --config <path>`,
     );
     const response = await askQuestion(
-      `Generate a default ${defaultConfigFile} and proceed? (y/n) `,
+      `Generate a default ${defaultConfigFileName} and proceed? (y/n)`,
     );
     if (response === "y") {
-      writeFileSync(defaultConfigFile, JSON.stringify(DEFAULT_CONFIG));
-      resolvedPath = path.resolve(defaultConfigFile);
+      writeFileSync(defaultConfigFileName, JSON.stringify(DEFAULT_CONFIG));
+      resolvedPath = path.resolve(defaultConfigFileName);
     } else {
       process.exit(1);
     }
