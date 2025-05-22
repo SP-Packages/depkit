@@ -3,5 +3,7 @@
   "language": "en",
   "useGitignore": true,
   "dictionaries": ["php", "typescript", "npm", "en-gb"],
-  "import": ["./node_modules/@sp-packages/cspell-dictionary/src/cspell-ext.json"]
+  "import": [
+    "./node_modules/@sp-packages/cspell-dictionary/src/cspell-ext.json"
+  ]
 }

@@ -1,7 +1,12 @@
-import { existsSync } from "fs";
-import { execSync } from "child_process";
-import { Printer } from "../utils/logger.js";
-import { Commands, CommandResult, Config, DepKitOptions } from "../types/types.js";
+import { existsSync } from 'fs';
+import { execSync } from 'child_process';
+import { Printer } from '../utils/logger.js';
+import {
+  Commands,
+  CommandResult,
+  Config,
+  DepKitOptions
+} from '../types/types.js';
 
 const toolCache = new Map<string, boolean>();
 
@@ -11,14 +16,17 @@ const toolCache = new Map<string, boolean>();
  * @param type - Optional type (e.g., "npm", "composer") to ensure the correct tool is checked
  * @returns True if the tool is available, false otherwise
  */
-export function isToolAvailable(tool: string, type?: "npm" | "composer"): boolean {
+export function isToolAvailable(
+  tool: string,
+  type?: 'npm' | 'composer'
+): boolean {
   const cacheKey = type ? `${type}:${tool}` : tool;
   if (toolCache.has(cacheKey)) return toolCache.get(cacheKey)!;
 
   const pathsToCheck = [
     `vendor/bin/${tool}`, // Check if it's installed in vendor/bin
     `/usr/local/bin/${tool}`, // Common global installation path
-    `/usr/bin/${tool}`, // Another common global path
+    `/usr/bin/${tool}` // Another common global path
   ];
 
   for (const path of pathsToCheck) {
@@ -30,10 +38,13 @@ export function isToolAvailable(tool: string, type?: "npm" | "composer"): boolea
 
   const commandsToCheck = [];
 
-  if (!type || type === "npm") {
-    commandsToCheck.push(`npx ${tool} --no-install --version`, `npm ${tool} --version`);
+  if (!type || type === 'npm') {
+    commandsToCheck.push(
+      `npx ${tool} --no-install --version`,
+      `npm ${tool} --version`
+    );
   }
-  if (!type || type === "composer") {
+  if (!type || type === 'composer') {
     commandsToCheck.push(`composer ${tool}`);
   }
 
@@ -41,7 +52,7 @@ export function isToolAvailable(tool: string, type?: "npm" | "composer"): boolea
 
   for (const cmd of commandsToCheck) {
     try {
-      execSync(cmd, { stdio: "ignore" });
+      execSync(cmd, { stdio: 'ignore' });
       toolCache.set(cacheKey, true);
       return true;
     } catch {
@@ -63,7 +74,8 @@ function sortToolsByPriority(tools: Commands): Commands {
   const sortedTools = Object.entries(tools)
     .sort(
       ([, toolA], [, toolB]) =>
-        (toolA.priority ?? Number.MAX_SAFE_INTEGER) - (toolB.priority ?? Number.MAX_SAFE_INTEGER),
+        (toolA.priority ?? Number.MAX_SAFE_INTEGER) -
+        (toolB.priority ?? Number.MAX_SAFE_INTEGER)
     )
     .map(([tool, lintTool]) => [tool, { ...lintTool }]);
 
@@ -81,13 +93,15 @@ export function getTools(config: Config, options: DepKitOptions): Commands {
   const { skipComposer = false, skipNpm = false, production = false } = options;
 
   const toolChecks = [
-    { tool: "composer", skipFlag: skipComposer, file: "composer.json" },
-    { tool: "npm", skipFlag: skipNpm, file: "package.json" },
+    { tool: 'composer', skipFlag: skipComposer, file: 'composer.json' },
+    { tool: 'npm', skipFlag: skipNpm, file: 'package.json' }
   ];
 
   toolChecks.forEach(({ tool, skipFlag, file }) => {
     if (skipFlag || !isToolAvailable(tool) || !existsSync(file)) {
-      tools = Object.fromEntries(Object.entries(tools).filter(([, t]) => t.type !== tool));
+      tools = Object.fromEntries(
+        Object.entries(tools).filter(([, t]) => t.type !== tool)
+      );
     }
   });
 
@@ -95,12 +109,15 @@ export function getTools(config: Config, options: DepKitOptions): Commands {
     tools = Object.fromEntries(
       Object.entries(tools).map(([key, tool]) => {
         const commandMap: { [key: string]: string } = {
-          "npm ci": "npm ci --omit=dev",
-          "npm install": "npm install --omit=dev",
-          "composer install": "composer install --no-dev",
+          'npm ci': 'npm ci --omit=dev',
+          'npm install': 'npm install --omit=dev',
+          'composer install': 'composer install --no-dev'
         };
-        return [key, { ...tool, command: commandMap[tool.command] || tool.command }];
-      }),
+        return [
+          key,
+          { ...tool, command: commandMap[tool.command] || tool.command }
+        ];
+      })
     );
   }
 
@@ -113,9 +130,9 @@ export function getTools(config: Config, options: DepKitOptions): Commands {
  */
 export function summary(results: CommandResult[]): void {
   if (Printer.isVerbose) {
-    Printer.log("DepKit Results", "subheader");
+    Printer.log('DepKit Results', 'subheader');
   } else {
-    Printer.plainSubheader("DepKit Results");
+    Printer.plainSubheader('DepKit Results');
   }
 
   const successes: string[] = [];
@@ -123,9 +140,9 @@ export function summary(results: CommandResult[]): void {
   const errors: string[] = [];
 
   results.forEach(({ title, status }) => {
-    if (status === "success") {
+    if (status === 'success') {
       successes.push(`${title}: Passed`);
-    } else if (status === "warning") {
+    } else if (status === 'warning') {
       warnings.push(`${title}: Issues found`);
     } else {
       errors.push(`${title}: Failed`);
@@ -136,13 +153,13 @@ export function summary(results: CommandResult[]): void {
   warnings.forEach((warning) => Printer.warning(warning));
   errors.forEach((error) => Printer.error(error));
 
-  Printer.log("DepKit Summary", "header");
+  Printer.log('DepKit Summary', 'header');
 
   if (errors.length === 0) {
-    Printer.log("DepKit completed successfully. Happy coding!", "success");
+    Printer.log('DepKit completed successfully. Happy coding!', 'success');
     process.exit(0);
   } else {
-    Printer.log("DepKit completed with errors.", "error");
+    Printer.log('DepKit completed with errors.', 'error');
     process.exit(1);
   }
 }

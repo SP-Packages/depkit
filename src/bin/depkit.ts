@@ -1,26 +1,32 @@
 #!/usr/bin/env node
-import { program } from "commander";
-import { createRequire } from "module";
-import { depkit } from "../cli/depkit.js";
-import { Printer } from "./../utils/logger.js";
-import { readConfig } from "./../core/config.js";
+import { program } from 'commander';
+import { createRequire } from 'module';
+import { depkit } from '../cli/depkit.js';
+import { Printer } from './../utils/logger.js';
+import { readConfig } from './../core/config.js';
 
 const require = createRequire(import.meta.url);
-const { version } = require("../../package.json");
+const { version } = require('../../package.json');
 
 program
-  .name("depkit")
+  .name('depkit')
   .version(version)
   .description(
-    "A lightweight CLI tool to efficiently manage Composer & NPM dependencies in a project.",
+    'A lightweight CLI tool to efficiently manage Composer & NPM dependencies in a project.'
   )
-  .argument("[files...]", "Optional File list to handle lint-staged")
-  .option("--skip-composer", "Skip processing Composer dependencies")
-  .option("--skip-npm", "Skip processing NPM dependencies")
-  .option("--production", "Install only production dependencies (exclude dev dependencies)")
-  .option("-c, --config <config>", "Path to the configuration file (default: depkit.json)")
-  .option("-q, --quiet", "Disable output")
-  .option("-v, --verbose", "Enable verbose logging")
+  .argument('[files...]', 'Optional File list to handle lint-staged')
+  .option('--skip-composer', 'Skip processing Composer dependencies')
+  .option('--skip-npm', 'Skip processing NPM dependencies')
+  .option(
+    '--production',
+    'Install only production dependencies (exclude dev dependencies)'
+  )
+  .option(
+    '-c, --config <config>',
+    'Path to the configuration file (default: depkit.json)'
+  )
+  .option('-q, --quiet', 'Disable output')
+  .option('-v, --verbose', 'Enable verbose logging')
   .action(async (_files, options) => {
     if (options.verbose) {
       Printer.enableVerbose();

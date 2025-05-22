@@ -3,8 +3,8 @@ export type Command = {
   prefix?: string;
   command: string;
   args?: string[];
-  type: "composer" | "npm";
-  behavior: "warn" | "error";
+  type: 'composer' | 'npm';
+  behavior: 'warn' | 'error';
   requires?: string;
   priority?: number;
 };
@@ -13,7 +13,7 @@ export type Commands = Record<string, Command>;
 
 export type CommandResult = {
   title: string;
-  status: "success" | "warning" | "error";
+  status: 'success' | 'warning' | 'error';
   output: string;
 };
 

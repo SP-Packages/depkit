@@ -1,1 +1,1 @@
-export { depkit } from "./cli/depkit.js";
+export { depkit } from './cli/depkit.js';

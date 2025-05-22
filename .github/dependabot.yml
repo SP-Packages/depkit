@@ -3,36 +3,36 @@ updates:
   # ===========================
   # NPM Updates (Weekly)
   # ===========================
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     commit-message:
-      prefix: "build(npm): [skip ci]"
+      prefix: 'build(npm): [skip ci]'
     labels:
-      - "dependencies"
-      - "npm"
+      - 'dependencies'
+      - 'npm'
     versioning-strategy: increase
     groups:
       dev-dependencies:
         patterns:
-          - "*"
-        dependency-type: "development"
+          - '*'
+        dependency-type: 'development'
 
   # ===========================
   # GitHub Actions Updates (Weekly)
   # ===========================
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     commit-message:
-      prefix: "build(actions): [skip ci]"
+      prefix: 'build(actions): [skip ci]'
     labels:
-      - "dependencies"
-      - "github-actions"
+      - 'dependencies'
+      - 'github-actions'
     groups:
       dev-dependencies:
         patterns:
-          - "*"
-        dependency-type: "development"
+          - '*'
+        dependency-type: 'development'
