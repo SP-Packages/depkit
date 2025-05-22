@@ -1,3 +1,14 @@
+## [2.4.0](https://github.com/SP-Packages/depkit/compare/v2.3.0...v2.4.0) (2025-05-22)
+
+### Features
+
+* **dependabot:** change update schedule to weekly for npm and actions ([16a87a5](https://github.com/SP-Packages/depkit/commit/16a87a5a655ae23a2238d523bed8910a69acbd99))
+
+### Bug Fixes
+
+* **dependencies:** update dependencies ([7f09f90](https://github.com/SP-Packages/depkit/commit/7f09f90257013c52904c30952a30f2f114ba11bd))
+* **workflows:** update action versions and ensure issue permissions ([b9085a8](https://github.com/SP-Packages/depkit/commit/b9085a872e16a017f6b9de9948e61f5b5a01d092))
+
 ## [2.3.0](https://github.com/SP-Packages/depkit/compare/v2.2.0...v2.3.0) (2025-04-01)
 
 ### Features
