@@ -1,3 +1,9 @@
+## [2.4.3](https://github.com/SP-Packages/depkit/compare/v2.4.2...v2.4.3) (2025-07-26)
+
+### Bug Fixes
+
+* **dependencies:** update dependencies ([1390838](https://github.com/SP-Packages/depkit/commit/1390838884146b5515718c780e826d6914f19e57))
+
 ## [2.4.2](https://github.com/SP-Packages/depkit/compare/v2.4.1...v2.4.2) (2025-07-26)
 
 ### Bug Fixes
