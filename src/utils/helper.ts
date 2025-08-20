@@ -23,12 +23,35 @@ export function isToolAvailable(
   const cacheKey = type ? `${type}:${tool}` : tool;
   if (toolCache.has(cacheKey)) return toolCache.get(cacheKey)!;
 
-  const pathsToCheck = [
-    `vendor/bin/${tool}`, // Check if it's installed in vendor/bin
-    `/usr/local/bin/${tool}`, // Common global installation path
-    `/usr/bin/${tool}` // Another common global path
-  ];
+  const pathsToCheck: string[] = [];
 
+  // Composer local bin
+  if (!type || type === 'composer') {
+    pathsToCheck.push(`vendor/bin/${tool}`);
+  }
+
+  // NPM local bin
+  if (!type || type === 'npm') {
+    pathsToCheck.push(`node_modules/.bin/${tool}`);
+  }
+
+  // Common system-wide paths
+  pathsToCheck.push(`/usr/local/bin/${tool}`, `/usr/bin/${tool}`);
+
+  // NPM global bin
+  if (!type || type === 'npm') {
+    try {
+      const npmGlobalBin = execSync('npm bin -g', {
+        encoding: 'utf8',
+        stdio: ['pipe', 'pipe', 'ignore']
+      }).trim();
+      pathsToCheck.push(`${npmGlobalBin}/${tool}`);
+    } catch {
+      // ignore if npm not available
+    }
+  }
+
+  // Check filesystem paths
   for (const path of pathsToCheck) {
     if (existsSync(path)) {
       toolCache.set(cacheKey, true);
