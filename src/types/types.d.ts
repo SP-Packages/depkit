@@ -21,6 +21,10 @@ export type DepKitOptions = {
   skipComposer: boolean;
   skipNpm: boolean;
   production: boolean;
+  strict: boolean;
+  quiet: boolean;
+  minimal: boolean;
+  verbose: boolean;
 };
 
 export type Config = {
