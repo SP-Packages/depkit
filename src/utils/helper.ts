@@ -259,7 +259,7 @@ export function summary(results: CommandResult[]): void {
     } else if (status === 'warning') {
       warnings.push(`${title}: Issues found`);
     } else {
-      errors.push(`${title}: Failed`);
+      errors.push(` ${title}: Failed`);
     }
   });
 
