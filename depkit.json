@@ -28,21 +28,21 @@
       "title": "Auditing PHP Dependencies",
       "command": "audit",
       "type": "composer",
-      "behavior": "error",
+      "behavior": "warn",
       "priority": 4
     },
     "COMPOSER_UPDATE": {
       "title": "Update PHP Dependencies",
       "command": "update",
       "type": "composer",
-      "behavior": "error",
+      "behavior": "warn",
       "priority": 5
     },
     "COMPOSER_OUTDATED": {
       "title": "Outdated PHP Dependencies",
       "command": "outdated",
       "type": "composer",
-      "behavior": "error",
+      "behavior": "warn",
       "priority": 6
     },
     "NPM_VERSION": {
@@ -66,7 +66,7 @@
       "prefix": "npx",
       "command": "depcheck",
       "type": "npm",
-      "behavior": "error",
+      "behavior": "warn",
       "requires": "depcheck",
       "priority": 9
     },
@@ -74,21 +74,21 @@
       "title": "Auditing NPM Packages",
       "command": "audit",
       "type": "npm",
-      "behavior": "error",
+      "behavior": "warn",
       "priority": 10
     },
     "NPM_UPDATE": {
       "title": "Update NPM Packages",
       "command": "update",
       "type": "npm",
-      "behavior": "error",
+      "behavior": "warn",
       "priority": 11
     },
     "NPM_OUTDATED": {
       "title": "Outdated NPM Packages",
       "command": "outdated",
       "type": "npm",
-      "behavior": "error",
+      "behavior": "warn",
       "priority": 12
     }
   }

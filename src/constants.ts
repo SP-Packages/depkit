@@ -21,6 +21,7 @@ export const DEFAULT_CONFIG: Config = {
     COMPOSER_INSTALL: {
       title: 'Installing PHP Dependencies',
       command: 'install',
+      args: ['--no-scripts'],
       type: 'composer',
       behavior: 'error',
       priority: 3
@@ -29,7 +30,7 @@ export const DEFAULT_CONFIG: Config = {
       title: 'Auditing PHP Dependencies',
       command: 'audit',
       type: 'composer',
-      behavior: 'error',
+      behavior: 'warn',
       priority: 4
     },
     COMPOSER_OUTDATED: {
@@ -68,7 +69,7 @@ export const DEFAULT_CONFIG: Config = {
       title: 'Auditing NPM Packages',
       command: 'audit',
       type: 'npm',
-      behavior: 'error',
+      behavior: 'warn',
       priority: 9
     },
     NPM_OUTDATED: {
