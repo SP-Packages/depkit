@@ -38,16 +38,54 @@ export function isToolAvailable(
 
   const commandsToCheck = [];
 
+  // --- NPM subcommand detection ---
   if (!type || type === 'npm') {
-    commandsToCheck.push(
-      `npx ${tool} --no-install --version`,
-      `npm ${tool} --version`
-    );
-  }
-  if (!type || type === 'composer') {
-    commandsToCheck.push(`composer ${tool}`);
+    try {
+      const output = execSync('npm help --json', {
+        encoding: 'utf8',
+        stdio: ['pipe', 'pipe', 'ignore']
+      });
+      const { commands } = JSON.parse(output);
+      if (commands && Object.keys(commands).includes(tool)) {
+        toolCache.set(cacheKey, true);
+        return true;
+      }
+    } catch {
+      // fallback
+      commandsToCheck.push(
+        `npx ${tool} --no-install --version`,
+        `npm ${tool} --version`
+      );
+    }
   }
 
+  // --- Composer subcommand detection ---
+  if (!type || type === 'composer') {
+    try {
+      const output = execSync('composer list --format=json', {
+        encoding: 'utf8',
+        stdio: ['pipe', 'pipe', 'ignore']
+      });
+      const { commands } = JSON.parse(output);
+      if (
+        commands.some(
+          (cmd: unknown) =>
+            typeof cmd === 'object' &&
+            cmd !== null &&
+            'name' in cmd &&
+            (cmd as { name?: string }).name === tool
+        )
+      ) {
+        toolCache.set(cacheKey, true);
+        return true;
+      }
+    } catch {
+      // fallback
+      commandsToCheck.push(`composer ${tool}`);
+    }
+  }
+
+  // Generic fallbacks
   commandsToCheck.push(`command -v ${tool}`, `${tool} --version`);
 
   for (const cmd of commandsToCheck) {
