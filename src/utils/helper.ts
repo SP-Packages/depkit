@@ -8,6 +8,55 @@ import {
   DepKitOptions
 } from '../types/types.js';
 
+type ComposerCommand = {
+  name: string;
+  aliases?: string[];
+};
+
+type ComposerList = {
+  commands: ComposerCommand[];
+};
+
+type NpmCommandInfo = {
+  description?: string;
+  aliases?: string[];
+};
+
+type NpmHelp = {
+  commands: Record<string, NpmCommandInfo>;
+};
+
+/**
+ * Checks if the given object is a ComposerList.
+ * @param obj - The object to check
+ * @returns True if the object is a ComposerList, false otherwise
+ */
+function isComposerList(obj: unknown): obj is ComposerList {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    Array.isArray((obj as { commands?: unknown }).commands)
+  );
+}
+
+/**
+ * Checks if the given object is an NpmHelp.
+ * @param obj - The object to check
+ * @returns True if the object is an NpmHelp, false otherwise
+ */
+function isNpmHelp(obj: unknown): obj is NpmHelp {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    'commands' in obj &&
+    typeof (obj as { commands?: unknown }).commands === 'object'
+  );
+}
+
+/**
+ * Cache for tool availability checks to avoid redundant filesystem checks.
+ * Keyed by tool name or type:toolName.
+ */
 const toolCache = new Map<string, boolean>();
 
 /**
@@ -59,19 +108,24 @@ export function isToolAvailable(
     }
   }
 
-  const commandsToCheck = [];
+  const commandsToCheck: string[] = [];
 
-  // --- NPM subcommand detection ---
+  // NPM subcommands
   if (!type || type === 'npm') {
     try {
       const output = execSync('npm help --json', {
         encoding: 'utf8',
         stdio: ['pipe', 'pipe', 'ignore']
       });
-      const { commands } = JSON.parse(output);
-      if (commands && Object.keys(commands).includes(tool)) {
-        toolCache.set(cacheKey, true);
-        return true;
+      const parsed: unknown = JSON.parse(output);
+
+      if (isNpmHelp(parsed)) {
+        for (const [name, info] of Object.entries(parsed.commands)) {
+          if (name === tool || info.aliases?.includes(tool)) {
+            toolCache.set(cacheKey, true);
+            return true;
+          }
+        }
       }
     } catch {
       // fallback
@@ -82,25 +136,24 @@ export function isToolAvailable(
     }
   }
 
-  // --- Composer subcommand detection ---
+  // Composer subcommands
   if (!type || type === 'composer') {
     try {
       const output = execSync('composer list --format=json', {
         encoding: 'utf8',
         stdio: ['pipe', 'pipe', 'ignore']
       });
-      const { commands } = JSON.parse(output);
-      if (
-        commands.some(
-          (cmd: unknown) =>
-            typeof cmd === 'object' &&
-            cmd !== null &&
-            'name' in cmd &&
-            (cmd as { name?: string }).name === tool
-        )
-      ) {
-        toolCache.set(cacheKey, true);
-        return true;
+      const parsed: unknown = JSON.parse(output);
+
+      if (isComposerList(parsed)) {
+        if (
+          parsed.commands.some(
+            (cmd) => cmd.name === tool || cmd.aliases?.includes(tool)
+          )
+        ) {
+          toolCache.set(cacheKey, true);
+          return true;
+        }
       }
     } catch {
       // fallback
