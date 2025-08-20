@@ -90,6 +90,7 @@ Options:
 --production Install only production dependencies (exclude dev dependencies)
 -c, --config <config> Path to the configuration file (default: depkit.json)
 -q, --quiet Disable output
+-m, --minimal Essential output
 -v, --verbose Enable verbose logging
 -h, --help display help for command
 ```
@@ -189,6 +190,7 @@ By default, `depkit` executes predefined commands for Composer and NPM, ensuring
 | Command                     | Description                                                                           |
 | --------------------------- | ------------------------------------------------------------------------------------- |
 | `composer -V`               | Checks the installed Composer version                                                 |
+| `composer validate`         | Verifying Composer Dependencies                                                       |
 | `composer install`          | Installs Composer dependencies                                                        |
 | `composer install --no-dev` | Installs Composer dependencies without dev dependencies (when `--production` is used) |
 | `composer audit`            | Checks for known security vulnerabilities in dependencies                             |
@@ -228,7 +230,7 @@ This helps maintain a **secure, up-to-date, and stable** project setup! 🚀
 ✔ [SUCCESS] Outdated PHP Dependencies: Passed
 ✔ [SUCCESS] Checking NPM version: Passed
 ✔ [SUCCESS] Installing NPM Packages: Passed
-⚠ [WARNING] Depcheck NPM Packages: Issues found
+⚠ [WARNING] Depcheck NPM Packages: Warning
 ✔ [SUCCESS] Outdated NPM Packages: Passed
 ✔ [SUCCESS] Auditing NPM Packages: Passed
 ```

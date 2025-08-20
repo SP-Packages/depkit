@@ -15,7 +15,7 @@ start:
 
 dep:
 	@echo "Dependencies status:"
-	npx depkit
+	npx depkit -m
 
 lint:
 	@echo "Running linters..."

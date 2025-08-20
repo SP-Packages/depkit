@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import pLimit from 'p-limit';
 import { spawn } from 'child_process';
 import { Ora, Printer } from '../utils/logger.js';
@@ -85,9 +86,17 @@ async function executeCommandBuffered(
 
       if (code === 0) {
         resolve({ title, status: 'success', output: stdoutBuffer.trim() });
-        Printer.log(`${title}- Successfully Completed.`, 'success');
-        Printer.log(`${cmd}`);
-        Printer.log(message.trim());
+        Printer.log(
+          [
+            chalk.green.bold('COMMAND:') + '\n' + chalk.white(cmd),
+            '',
+            chalk.green.bold('RESPONSE:') + '\n' + chalk.gray(message.trim()),
+            '',
+            chalk.green.bold('STATUS:') +
+              '\n' +
+              chalk.white('Process completed successfully.')
+          ].join('\n')
+        );
       } else {
         if (behavior === 'warn') {
           resolve({
@@ -95,22 +104,44 @@ async function executeCommandBuffered(
             status: 'warning',
             output: stderrBuffer.trim() || 'Warning'
           });
-          Printer.log(`${title}- Failed with warnings.`, 'warning');
-          Printer.log(`${cmd}`);
-          Printer.log(message.trim());
+          if (!Printer.isVerbose) {
+            spinner.clear().start();
+            Printer.plainSubheader(title);
+          }
+          Printer.message(
+            [
+              chalk.yellow.bold('COMMAND:') + '\n' + chalk.white(cmd),
+              '',
+              chalk.yellow.bold('RESPONSE:') +
+                '\n' +
+                chalk.gray(message.trim()),
+              '',
+              chalk.yellow.bold('STATUS:') +
+                '\n' +
+                chalk.white('Process completed with warnings.')
+            ].join('\n')
+          );
         } else {
           resolve({
             title,
             status: 'error',
             output: stderrBuffer.trim() || 'Error'
           });
-          Printer.log(`${title}- Failed to complete.`, 'error');
-          Printer.log(`${cmd}`);
           if (!Printer.isVerbose) {
             spinner.clear().start();
             Printer.plainSubheader(title);
           }
-          Printer.error('\n' + message.trim());
+          Printer.message(
+            [
+              chalk.red.bold('COMMAND:') + '\n' + chalk.white(cmd),
+              '',
+              chalk.red.bold('RESPONSE:') + '\n' + chalk.gray(message.trim()),
+              '',
+              chalk.red.bold('STATUS:') +
+                '\n' +
+                chalk.white('Process failed with errors.')
+            ].join('\n')
+          );
         }
       }
     });

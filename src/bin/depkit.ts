@@ -26,6 +26,7 @@ program
     'Path to the configuration file (default: depkit.json)'
   )
   .option('-q, --quiet', 'Disable output')
+  .option('-m, --minimal', 'Enable minimal output')
   .option('-v, --verbose', 'Enable verbose logging')
   .action(async (_files, options) => {
     if (options.verbose) {
@@ -33,6 +34,9 @@ program
     }
     if (options.quiet) {
       Printer.enableQuiet();
+    }
+    if (options.minimal) {
+      Printer.enableMinimal();
     }
     const config = await readConfig(options.config);
     depkit(config, options);

@@ -257,7 +257,7 @@ export function summary(results: CommandResult[]): void {
     if (status === 'success') {
       successes.push(`${title}: Passed`);
     } else if (status === 'warning') {
-      warnings.push(`${title}: Issues found`);
+      warnings.push(`${title}: Warning`);
     } else {
       errors.push(` ${title}: Failed`);
     }
