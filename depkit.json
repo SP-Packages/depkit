@@ -54,12 +54,21 @@
       "behavior": "error",
       "priority": 7
     },
+    "NPM_VERIFY": {
+      "title": "Verifying NPM Package",
+      "prefix": "npx",
+      "command": "npmPkgJsonLint .",
+      "type": "npm",
+      "behavior": "error",
+      "requires": "npm-package-json-lint",
+      "priority": 8
+    },
     "NPM_INSTALL": {
       "title": "Installing NPM Packages",
       "command": "install",
       "type": "npm",
       "behavior": "error",
-      "priority": 8
+      "priority": 9
     },
     "DEPCHECK": {
       "title": "Depcheck NPM Packages",
@@ -68,28 +77,28 @@
       "type": "npm",
       "behavior": "warn",
       "requires": "depcheck",
-      "priority": 9
+      "priority": 10
     },
     "NPM_AUDIT": {
       "title": "Auditing NPM Packages",
       "command": "audit",
       "type": "npm",
       "behavior": "warn",
-      "priority": 10
+      "priority": 11
     },
     "NPM_UPDATE": {
       "title": "Update NPM Packages",
       "command": "update",
       "type": "npm",
       "behavior": "warn",
-      "priority": 11
+      "priority": 12
     },
     "NPM_OUTDATED": {
       "title": "Outdated NPM Packages",
       "command": "outdated",
       "type": "npm",
       "behavior": "warn",
-      "priority": 12
+      "priority": 13
     }
   }
 }
