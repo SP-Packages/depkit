@@ -1,3 +1,21 @@
+## [2.5.0](https://github.com/SP-Packages/depkit/compare/v2.4.3...v2.5.0) (2025-08-20)
+
+### Features
+
+* **composer:** add verification step for Composer dependencies ([5cdf6a6](https://github.com/SP-Packages/depkit/commit/5cdf6a63e66810a162c8dc2b3ab25bbb5cb0c5cc))
+* **depkit:** add npm verification step with npm-package-json-lint ([d5034d3](https://github.com/SP-Packages/depkit/commit/d5034d35f46ffc07c3cc5d34d34a76366e2f4bb0))
+* **helper:** enhance tool availability checks for npm and composer ([39ccdf0](https://github.com/SP-Packages/depkit/commit/39ccdf0c9985122ed706f14aa6b614675925d2c5))
+* **helper:** enhance tool availability checks for npm and composer ([bb9946d](https://github.com/SP-Packages/depkit/commit/bb9946dd51fe1e1a260b820cfdf87fbd94175545))
+* **helper:** improve tool availability checks and formatting ([1e9eee2](https://github.com/SP-Packages/depkit/commit/1e9eee24e0e89192683c128bb8bcae8bfc582676))
+* **helper:** improve tool availability checks for npm and composer ([ec4139d](https://github.com/SP-Packages/depkit/commit/ec4139d5128885d43ff6e094af07a7e03c3ab2fc))
+
+### Bug Fixes
+
+* **dependencies:** update dependencies ([daf4900](https://github.com/SP-Packages/depkit/commit/daf49004d6e96e50616a414b56456ceaf9033405))
+* **depkit:** change behavior of a few Composer and NPM commands to warn ([997044c](https://github.com/SP-Packages/depkit/commit/997044c4242121ab7d5ac79207c9f0bcbbfbd8de))
+* **executor:** add newline before error message for better readability ([793227d](https://github.com/SP-Packages/depkit/commit/793227d00e2fc3a3e79f122f61d7886ddd7b11ce))
+* **lintrc:** rename lintrc config file ([ed1832d](https://github.com/SP-Packages/depkit/commit/ed1832d34b735f38b69a84ed901e18593de10e68))
+
 ## [2.4.3](https://github.com/SP-Packages/depkit/compare/v2.4.2...v2.4.3) (2025-07-26)
 
 ### Bug Fixes
