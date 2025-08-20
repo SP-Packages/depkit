@@ -90,7 +90,9 @@ async function executeCommandBuffered(
           [
             chalk.green.bold('COMMAND:') + '\n' + chalk.white(cmd),
             '',
-            chalk.green.bold('RESPONSE:') + '\n' + chalk.gray(message.trim()),
+            chalk.green.bold('RESPONSE:') +
+              '\n' +
+              chalk.gray(message.trim() ? message.trim() : 'No Response'),
             '',
             chalk.green.bold('STATUS:') +
               '\n' +
@@ -114,7 +116,7 @@ async function executeCommandBuffered(
               '',
               chalk.yellow.bold('RESPONSE:') +
                 '\n' +
-                chalk.gray(message.trim()),
+                chalk.gray(message.trim() ? message.trim() : 'No Response'),
               '',
               chalk.yellow.bold('STATUS:') +
                 '\n' +
@@ -135,7 +137,9 @@ async function executeCommandBuffered(
             [
               chalk.red.bold('COMMAND:') + '\n' + chalk.white(cmd),
               '',
-              chalk.red.bold('RESPONSE:') + '\n' + chalk.gray(message.trim()),
+              chalk.red.bold('RESPONSE:') +
+                '\n' +
+                chalk.gray(message.trim() ? message.trim() : 'No Response'),
               '',
               chalk.red.bold('STATUS:') +
                 '\n' +
