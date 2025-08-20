@@ -8,34 +8,42 @@
       "behavior": "error",
       "priority": 1
     },
+    "COMPOSER_VERIFY": {
+      "title": "Verifying Composer Dependencies",
+      "command": "validate",
+      "args": ["--no-interaction", "--strict"],
+      "type": "composer",
+      "behavior": "error",
+      "priority": 2
+    },
     "COMPOSER_INSTALL": {
       "title": "Installing PHP Dependencies",
       "command": "install",
       "args": ["--no-scripts"],
       "type": "composer",
       "behavior": "error",
-      "priority": 2
+      "priority": 3
     },
     "COMPOSER_AUDIT": {
       "title": "Auditing PHP Dependencies",
       "command": "audit",
       "type": "composer",
       "behavior": "error",
-      "priority": 3
+      "priority": 4
     },
     "COMPOSER_UPDATE": {
       "title": "Update PHP Dependencies",
       "command": "update",
       "type": "composer",
       "behavior": "error",
-      "priority": 4
+      "priority": 5
     },
     "COMPOSER_OUTDATED": {
       "title": "Outdated PHP Dependencies",
       "command": "outdated",
       "type": "composer",
       "behavior": "error",
-      "priority": 5
+      "priority": 6
     },
     "NPM_VERSION": {
       "title": "Checking NPM version",
@@ -44,14 +52,14 @@
       "args": ["--version"],
       "type": "npm",
       "behavior": "error",
-      "priority": 6
+      "priority": 7
     },
     "NPM_INSTALL": {
       "title": "Installing NPM Packages",
       "command": "install",
       "type": "npm",
       "behavior": "error",
-      "priority": 7
+      "priority": 8
     },
     "DEPCHECK": {
       "title": "Depcheck NPM Packages",
@@ -60,28 +68,28 @@
       "type": "npm",
       "behavior": "error",
       "requires": "depcheck",
-      "priority": 8
+      "priority": 9
     },
     "NPM_AUDIT": {
       "title": "Auditing NPM Packages",
       "command": "audit",
       "type": "npm",
       "behavior": "error",
-      "priority": 9
+      "priority": 10
     },
     "NPM_UPDATE": {
       "title": "Update NPM Packages",
       "command": "update",
       "type": "npm",
       "behavior": "error",
-      "priority": 10
+      "priority": 11
     },
     "NPM_OUTDATED": {
       "title": "Outdated NPM Packages",
       "command": "outdated",
       "type": "npm",
       "behavior": "error",
-      "priority": 11
+      "priority": 12
     }
   }
 }
