@@ -1,3 +1,11 @@
+## [2.6.0](https://github.com/SP-Packages/depkit/compare/v2.5.0...v2.6.0) (2025-08-20)
+
+### Features
+
+* **dependencies:** add chalk as a dependency in package.json ([02e655e](https://github.com/SP-Packages/depkit/commit/02e655e7784cd3a896f0189e07472bcd8adc2ecf))
+* **output:** enhance output and new parameter for minimal output ([92d0e0e](https://github.com/SP-Packages/depkit/commit/92d0e0e19310fc91c5fad5330a6ae283b47b54f7))
+* **release:** add minimal output parameter ([80e49c7](https://github.com/SP-Packages/depkit/commit/80e49c72e1efdfdb1fe6bb944bbf2c1a8951ed92))
+
 ## [2.5.0](https://github.com/SP-Packages/depkit/compare/v2.4.3...v2.5.0) (2025-08-20)
 
 ### Features
