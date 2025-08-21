@@ -1,3 +1,15 @@
+## [2.7.0](https://github.com/SP-Packages/depkit/compare/v2.6.0...v2.7.0) (2025-08-21)
+
+### Features
+
+* **options:** add strict mode to enhance error handling in summary ([77d2f3e](https://github.com/SP-Packages/depkit/commit/77d2f3ea4c97ed4c4bc92669f9a528ad1cc37179))
+* **release:** add strict mode ([7dbda8b](https://github.com/SP-Packages/depkit/commit/7dbda8bd84aa45d8f5d5c678883b3c0ccb03baae))
+
+### Bug Fixes
+
+* **executor:** handle empty response message in command output ([53e2dd5](https://github.com/SP-Packages/depkit/commit/53e2dd579370f761dc9b6ae57af115c4e1e6b806))
+* **types:** add strict, quiet, minimal, and verbose to DepKitOptions ([6f4802a](https://github.com/SP-Packages/depkit/commit/6f4802a58ae3f8ad56c5cd3ffdbb20e713d100b3))
+
 ## [2.6.0](https://github.com/SP-Packages/depkit/compare/v2.5.0...v2.6.0) (2025-08-20)
 
 ### Features
