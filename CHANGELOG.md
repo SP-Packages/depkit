@@ -1,3 +1,10 @@
+## [2.7.1](https://github.com/SP-Packages/depkit/compare/v2.7.0...v2.7.1) (2025-08-21)
+
+### Bug Fixes
+
+* **dependencies:** update dependencies ([2ea55cf](https://github.com/SP-Packages/depkit/commit/2ea55cf8d589435213795c2f9c5ce59496e6c260))
+* **dep:** remove -m flag from depkit command in Makefile ([765dc43](https://github.com/SP-Packages/depkit/commit/765dc4346cbb3ae7278c7405a0fcc9d409e1c143))
+
 ## [2.7.0](https://github.com/SP-Packages/depkit/compare/v2.6.0...v2.7.0) (2025-08-21)
 
 ### Features
