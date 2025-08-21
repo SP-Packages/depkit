@@ -25,6 +25,7 @@ program
     '-c, --config <config>',
     'Path to the configuration file (default: depkit.json)'
   )
+  .option('-s, --strict', 'Enable strict mode')
   .option('-q, --quiet', 'Disable output')
   .option('-m, --minimal', 'Enable minimal output')
   .option('-v, --verbose', 'Enable verbose logging')

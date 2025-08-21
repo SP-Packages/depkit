@@ -241,8 +241,9 @@ export function getTools(config: Config, options: DepKitOptions): Commands {
 /**
  * Prints the summary of the DepKit.
  * @param results - The results of the commands
+ * @param strict - Whether to enable strict mode
  */
-export function summary(results: CommandResult[]): void {
+export function summary(results: CommandResult[], strict = false): void {
   if (Printer.isVerbose) {
     Printer.log('DepKit Results', 'subheader');
   } else {
@@ -269,9 +270,12 @@ export function summary(results: CommandResult[]): void {
 
   Printer.log('DepKit Summary', 'header');
 
-  if (errors.length === 0) {
+  if (errors.length === 0 && (!strict || warnings.length === 0)) {
     Printer.log('DepKit completed successfully. Happy coding!', 'success');
     process.exit(0);
+  } else if (errors.length === 0 && strict && warnings.length > 0) {
+    Printer.log('DepKit completed with warnings (strict mode).', 'warning');
+    process.exit(1);
   } else {
     Printer.log('DepKit completed with errors.', 'error');
     process.exit(1);

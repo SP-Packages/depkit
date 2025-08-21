@@ -28,5 +28,5 @@ export async function depkit(
   const results = await executeCommands(tools, spinner);
   spinner.clear();
   toolResults.push(...results);
-  summary(toolResults);
+  summary(toolResults, options.strict);
 }

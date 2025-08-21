@@ -89,6 +89,7 @@ Options:
 --skip-npm Skip processing NPM dependencies
 --production Install only production dependencies (exclude dev dependencies)
 -c, --config <config> Path to the configuration file (default: depkit.json)
+-s, --strict Strict Mode (return exit code 1 even for warnings)
 -q, --quiet Disable output
 -m, --minimal Essential output
 -v, --verbose Enable verbose logging
