@@ -1,3 +1,12 @@
+## [2.7.2](https://github.com/SP-Packages/depkit/compare/v2.7.1...v2.7.2) (2025-08-22)
+
+### Bug Fixes
+
+* **dependencies:** update dependencies ([ecdd5c4](https://github.com/SP-Packages/depkit/commit/ecdd5c426d09148949895c075324de8022140bfd))
+* **dependencies:** update dependencies ([51a08b6](https://github.com/SP-Packages/depkit/commit/51a08b68155d96599617909aa2ef182cce230bdd))
+* **lint-staged:** add strict mode to lintrc command ([bf8e45e](https://github.com/SP-Packages/depkit/commit/bf8e45e0293e42d338181e250c48be131f024b6d))
+* **release.config:** remove unused release rules and clean up config ([c1d689c](https://github.com/SP-Packages/depkit/commit/c1d689ca2805f15d3412617b8177e231748ea598))
+
 ## [2.7.1](https://github.com/SP-Packages/depkit/compare/v2.7.0...v2.7.1) (2025-08-21)
 
 ### Bug Fixes
