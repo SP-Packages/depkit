@@ -1,20 +1,11 @@
 {
   "TOOLS": {
-    "COMPOSER_VERSION": {
-      "title": "Checking Composer version",
-      "command": "info",
-      "args": ["--version"],
+    "COMPOSER_AUDIT": {
+      "title": "Auditing PHP Dependencies",
+      "command": "audit",
       "type": "composer",
-      "behavior": "error",
-      "priority": 1
-    },
-    "COMPOSER_VERIFY": {
-      "title": "Verifying Composer Dependencies",
-      "command": "validate",
-      "args": ["--no-interaction", "--strict"],
-      "type": "composer",
-      "behavior": "error",
-      "priority": 2
+      "behavior": "warn",
+      "priority": 4
     },
     "COMPOSER_INSTALL": {
       "title": "Installing PHP Dependencies",
@@ -24,12 +15,12 @@
       "behavior": "error",
       "priority": 3
     },
-    "COMPOSER_AUDIT": {
-      "title": "Auditing PHP Dependencies",
-      "command": "audit",
+    "COMPOSER_OUTDATED": {
+      "title": "Outdated PHP Dependencies",
+      "command": "outdated",
       "type": "composer",
       "behavior": "warn",
-      "priority": 4
+      "priority": 6
     },
     "COMPOSER_UPDATE": {
       "title": "Update PHP Dependencies",
@@ -38,37 +29,21 @@
       "behavior": "warn",
       "priority": 5
     },
-    "COMPOSER_OUTDATED": {
-      "title": "Outdated PHP Dependencies",
-      "command": "outdated",
+    "COMPOSER_VERIFY": {
+      "title": "Verifying Composer Dependencies",
+      "command": "validate",
+      "args": ["--no-interaction", "--strict"],
       "type": "composer",
-      "behavior": "warn",
-      "priority": 6
+      "behavior": "error",
+      "priority": 2
     },
-    "NPM_VERSION": {
-      "title": "Checking NPM version",
-      "prefix": "npm",
+    "COMPOSER_VERSION": {
+      "title": "Checking Composer version",
       "command": "info",
       "args": ["--version"],
-      "type": "npm",
+      "type": "composer",
       "behavior": "error",
-      "priority": 7
-    },
-    "NPM_VERIFY": {
-      "title": "Verifying NPM Package",
-      "prefix": "npx",
-      "command": "npmPkgJsonLint .",
-      "type": "npm",
-      "behavior": "error",
-      "requires": "npm-package-json-lint",
-      "priority": 8
-    },
-    "NPM_INSTALL": {
-      "title": "Installing NPM Packages",
-      "command": "install",
-      "type": "npm",
-      "behavior": "error",
-      "priority": 9
+      "priority": 1
     },
     "DEPCHECK": {
       "title": "Depcheck NPM Packages",
@@ -86,12 +61,12 @@
       "behavior": "warn",
       "priority": 11
     },
-    "NPM_UPDATE": {
-      "title": "Update NPM Packages",
-      "command": "update",
+    "NPM_INSTALL": {
+      "title": "Installing NPM Packages",
+      "command": "install",
       "type": "npm",
-      "behavior": "warn",
-      "priority": 12
+      "behavior": "error",
+      "priority": 9
     },
     "NPM_OUTDATED": {
       "title": "Outdated NPM Packages",
@@ -99,6 +74,31 @@
       "type": "npm",
       "behavior": "warn",
       "priority": 13
+    },
+    "NPM_UPDATE": {
+      "title": "Update NPM Packages",
+      "command": "update",
+      "type": "npm",
+      "behavior": "warn",
+      "priority": 12
+    },
+    "NPM_VERIFY": {
+      "title": "Verifying NPM Package",
+      "prefix": "npx",
+      "command": "npmPkgJsonLint .",
+      "type": "npm",
+      "behavior": "error",
+      "requires": "npm-package-json-lint",
+      "priority": 8
+    },
+    "NPM_VERSION": {
+      "title": "Checking NPM version",
+      "prefix": "npm",
+      "command": "info",
+      "args": ["--version"],
+      "type": "npm",
+      "behavior": "error",
+      "priority": 7
     }
   }
 }
