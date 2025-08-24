@@ -42,7 +42,6 @@ export const DEFAULT_CONFIG: Config = {
     },
     NPM_VERSION: {
       title: 'Checking NPM version',
-      prefix: 'npm',
       command: 'info',
       args: ['--version'],
       type: 'npm',

@@ -2,6 +2,7 @@ import { existsSync } from 'fs';
 import { execSync } from 'child_process';
 import { Printer } from '../utils/logger.js';
 import {
+  Command,
   Commands,
   CommandResult,
   Config,
@@ -25,6 +26,8 @@ type NpmCommandInfo = {
 type NpmHelp = {
   commands: Record<string, NpmCommandInfo>;
 };
+
+type ExecStrategy = 'npm' | 'npx' | 'composer' | 'vendor';
 
 /**
  * Checks if the given object is a ComposerList.
@@ -58,6 +61,15 @@ function isNpmHelp(obj: unknown): obj is NpmHelp {
  * Keyed by tool name or type:toolName.
  */
 const toolCache = new Map<string, boolean>();
+
+/**
+ * Determines the execution strategy for a given tool.
+ * @param tool - The tool to determine the strategy for
+ * @returns The execution strategy: "npx", "npm", "composer", "vendor
+ */
+function getExecStrategy(tool: Command): ExecStrategy {
+  return tool.prefix ?? (tool.type === 'npm' ? 'npm' : 'composer');
+}
 
 /**
  * Checks if the given tool is available in the system.
@@ -176,6 +188,36 @@ export function isToolAvailable(
 
   toolCache.set(cacheKey, false);
   return false;
+}
+
+/**
+ * Determines the execution strategy for a given tool.
+ * @param tool - The tool to determine the strategy for
+ * @returns The execution strategy: "npx", "npm", "composer", "vendor
+ */
+export function buildCommand(tool: Command): string {
+  const exec = getExecStrategy(tool);
+
+  let cmd: string;
+  switch (exec) {
+    case 'npx':
+      cmd = `npx ${tool.command}`;
+      break;
+    case 'npm':
+      cmd = `npm ${tool.command}`;
+      break;
+    case 'composer':
+      cmd = `composer ${tool.command}`;
+      break;
+    case 'vendor':
+      cmd = `vendor/bin/${tool.command}`;
+      break;
+    default:
+      cmd = tool.command;
+  }
+
+  if (tool.args?.length) cmd += ` ${tool.args.join(' ')}`;
+  return cmd.trim();
 }
 
 /**

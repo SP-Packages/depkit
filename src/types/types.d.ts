@@ -1,6 +1,6 @@
 export type Command = {
   title: string;
-  prefix?: string;
+  prefix?: 'npx' | 'npm' | 'composer' | 'vendor';
   command: string;
   args?: string[];
   type: 'composer' | 'npm';
