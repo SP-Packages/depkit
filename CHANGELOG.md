@@ -1,3 +1,11 @@
+## [2.8.0](https://github.com/SP-Packages/depkit/compare/v2.7.2...v2.8.0) (2025-08-24)
+
+### Features
+
+* **executor:** refactor command execution and add buildCommand utility ([3fe0b63](https://github.com/SP-Packages/depkit/commit/3fe0b6348eca613eb45d47ea2a115eb81864a107))
+* **readme:** add configuration options for depkit.json file ([86f99b4](https://github.com/SP-Packages/depkit/commit/86f99b4e0ffcd03e305ac09c163ce76bb30b911f))
+* **release:** improve tool deduction and execution strategy ([74d5dbd](https://github.com/SP-Packages/depkit/commit/74d5dbd2692231d1723f5f1d0c634e9010964972))
+
 ## [2.7.2](https://github.com/SP-Packages/depkit/compare/v2.7.1...v2.7.2) (2025-08-22)
 
 ### Bug Fixes
