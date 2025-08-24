@@ -133,6 +133,18 @@ This runs:
 
 Running the `depkit` command will allow you to automatically create the `depkit.json` file. Alternatively, you can manually create a `depkit.json` or `.depkit.json` in your project root or a custom configuration file and pass it using the `-c` or `--config` parameter:
 
+- `title`: The display name of the tool.
+- `type`: The type of package manager used (`npm` or `composer`).
+- `prefix`: Specifies how the tool is invoked:
+  - `"npm"`: For npm subcommands (can be omitted if `type` is `"npm"`, as it's the default).
+  - `"npx"`: For npm custom binaries (installed in `node_modules/.bin`).
+  - `"composer"`: For composer subcommands (can be omitted if `type` is `"composer"`, as it's the default).
+  - `"vendor"`: For composer custom binaries (installed in `vendor/bin`).
+- `command`: The command to run the linter.
+- `args`: An array of arguments to pass to the command.
+- `behavior`: The behavior of the tool (`error` or `warn`).
+- `priority`: The priority of the tool execution (lower number means higher priority).
+
 ```json
 {
   "TOOLS": {
